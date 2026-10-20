@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cresseyy | Personal Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --bg:#F2F0FF; --panel:#FFFFFF; --ink:#16143F; --muted:#5B5985;
+  --accent:#3A33E0; --accent-ink:#FFFFFF; --pop:#FFC2D4; --line:#D6D2F5;
+  --blob:.45;
+}
+[data-theme="dark"]{
+  --bg:#12112B; --panel:#1B1A3D; --ink:#ECEBFF; --muted:#A6A4D1;
+  --accent:#A09CFF; --accent-ink:#12112B; --pop:#7A3B55; --line:#34316A;
+  --blob:.22;
+}
+
+[data-vibe="ocean"]{--accent:#0B7285;--pop:#BDE6F2;--bg:#EAF6FA;--line:#C3E0EA}
+[data-vibe="sunset"]{--accent:#D6336C;--pop:#FFD0A8;--bg:#FFF2EC;--line:#F5D3C6}
+[data-vibe="forest"]{--accent:#2B7A3B;--pop:#CDE8B5;--bg:#EFF6EA;--line:#CFE0C4}
+[data-theme="dark"][data-vibe="ocean"]{--accent:#5CCFE6;--accent-ink:#0E1C22;--pop:#1F5A6B;--bg:#0E1C22;--panel:#15292F;--line:#2A4A55}
+[data-theme="dark"][data-vibe="sunset"]{--accent:#FF8FB1;--accent-ink:#261519;--pop:#7A4A2B;--bg:#261519;--panel:#351E24;--line:#5A3540}
+[data-theme="dark"][data-vibe="forest"]{--accent:#8FDB8A;--accent-ink:#101A12;--pop:#3D6B3A;--bg:#101A12;--panel:#18271B;--line:#2D4431}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.1rem/1.65 "DM Sans",Arial,sans-serif;transition:background .4s,color .4s;overflow-x:hidden}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+h1,h2{font-family:"Syne",Arial,sans-serif;margin:0;line-height:1.05}
+.page{max-width:62rem;margin:0 auto;padding:0 1.5rem;position:relative}
+
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.blob{position:absolute;width:42vmax;height:42vmax;border-radius:50%;filter:blur(70px);opacity:var(--blob);animation:drift 20s ease-in-out infinite alternate}
+.b1{background:var(--accent);top:-18vmax;left:-12vmax}
+.b2{background:var(--pop);bottom:-18vmax;right:-12vmax;animation-delay:-7s}
+.b3{background:var(--pop);top:40%;left:45%;width:22vmax;height:22vmax;animation-delay:-12s}
+.spot{position:fixed;left:var(--mx,50%);top:var(--my,30%);width:30rem;height:30rem;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%);pointer-events:none;z-index:-1;transition:left .15s,top .15s}
+.floaty{position:absolute;font-size:1.6rem;opacity:.5;animation:rise linear infinite}
+
+
+.progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--accent),var(--pop));z-index:30}
+
+
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;padding:1rem 0;font-weight:700;backdrop-filter:blur(10px)}
+.logo{font-family:"Syne",sans-serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.top nav{display:flex;gap:1.1rem;align-items:center;flex-wrap:wrap}
+.top nav a{color:var(--ink);text-decoration:none;position:relative}
+.top nav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.top nav a:hover::after,.top nav a.on::after{transform:scaleX(1)}
+#theme{background:var(--panel);border:1px solid var(--line);border-radius:50%;width:2.4rem;height:2.4rem;cursor:pointer;font-size:1.1rem;transition:transform .5s}
+#theme:hover{transform:rotate(180deg)}
+
+
+.hero{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;padding:3rem 0 3rem;min-height:82vh}
+.hero h1{font-size:clamp(3rem,9vw,6.5rem);font-weight:600;letter-spacing:-.04em}
+.hero h1 .ch{display:inline-block;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i)*55ms)}
+.hero h1 .ch:hover{animation:jelly .6s;color:var(--accent)}
+.wave{display:inline-block;transform-origin:70% 70%;animation:wave 2.4s ease-in-out infinite}
+.typed-line{font:700 clamp(1.3rem,3vw,1.9rem)/1.3 "Syne",Arial,sans-serif;margin:1rem 0 .5rem}
+.typed{color:var(--accent)}
+.cursor{animation:blink 1s steps(1) infinite;color:var(--accent)}
+.intro{max-width:30rem;color:var(--muted);font-size:1.2rem;margin:.5rem 0 1.5rem}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;padding:.85rem 1.6rem;border-radius:999px;font:700 1rem "DM Sans",sans-serif;cursor:pointer;transition:transform .15s,box-shadow .2s;box-shadow:0 8px 24px -10px var(--accent)}
+.btn:hover{transform:translateY(-3px) scale(1.04)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.vibes{display:flex;align-items:center;gap:.6rem;margin:0 0 1.25rem;font-weight:700;flex-wrap:wrap}
+.vibe{width:2rem;height:2rem;border-radius:50%;border:3px solid var(--panel);background:var(--dot);cursor:pointer;box-shadow:0 0 0 2px var(--line);transition:transform .15s,box-shadow .15s}
+.vibe:hover{transform:scale(1.2)}
+.vibe.active{box-shadow:0 0 0 3px var(--ink)}
+.fact{min-height:1.7em;margin:1rem 0 0;font-weight:500}
+.fact.flash{animation:pop .5s both}
+
+.photo-wrap{position:relative;cursor:pointer}
+.photo-wrap::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:3px dashed var(--accent);animation:spin 18s linear infinite}
+.photo{position:relative;width:clamp(9rem,22vw,15rem);aspect-ratio:1;border-radius:50%;background:var(--pop);overflow:hidden;animation:float 6s ease-in-out infinite;transition:transform .5s}
+.photo.spin{transform:rotate(360deg) scale(1.08)}
+.photo .initials{position:absolute;inset:0;display:grid;place-items:center;font:800 clamp(2.5rem,7vw,5rem) "Syne",sans-serif}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem;font-size:.85rem;font-weight:700;white-space:nowrap;box-shadow:0 6px 18px -8px rgba(0,0,0,.3);animation:float 5s ease-in-out infinite}
+.badge.one{top:4%;left:-30%}
+.badge.two{bottom:8%;right:-25%;animation-delay:-2s}
+.photo-tip{text-align:center;color:var(--muted);font-size:.8rem;margin-top:1rem}
+
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:.3rem;color:var(--muted);font-size:.85rem;margin:-1rem 0 2rem;text-decoration:none}
+.mouse{width:1.4rem;height:2.2rem;border:2px solid var(--muted);border-radius:1rem;position:relative}
+.mouse::after{content:"";position:absolute;left:50%;top:.4rem;width:4px;height:.5rem;margin-left:-2px;background:var(--accent);border-radius:2px;animation:scrolldot 1.6s infinite}
+
+.marquee{overflow:hidden;border-block:1px solid var(--line);background:var(--panel);padding:.8rem 0;transform:rotate(-1.5deg);margin:0 -2rem 1rem}
+.marquee-track{display:flex;gap:2rem;width:max-content;animation:marq 26s linear infinite;font:800 1.3rem "Syne",sans-serif;white-space:nowrap}
+.marquee-track span:nth-child(even){color:var(--accent)}
+
+section{padding:4rem 0;position:relative}
+.kicker{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+h2{font-size:clamp(2rem,5vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1.25rem}
+.hint{color:var(--muted);margin:-.5rem 0 1.5rem}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
+.reveal.show{opacity:1;transform:none}
+
+.timeline{position:relative;list-style:none;margin:0;padding:0 0 0 2.5rem}
+.timeline::before,.timeline::after{content:"";position:absolute;left:.7rem;top:0;bottom:0;width:3px;border-radius:3px}
+.timeline::before{background:var(--line)}
+.timeline::after{background:var(--accent);transform-origin:top;transform:scaleY(var(--p,0))}
+.t-item{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:1.25rem;padding:1.1rem 1.4rem;margin-bottom:1.25rem;opacity:0;transform:translateX(-30px);transition:opacity .6s,transform .6s,box-shadow .2s}
+.t-item.show{opacity:1;transform:none}
+.t-item:hover{box-shadow:0 12px 30px -16px var(--accent)}
+.t-item::before{content:attr(data-icon);position:absolute;left:-2.55rem;top:1rem;width:2rem;height:2rem;display:grid;place-items:center;background:var(--bg);border:3px solid var(--accent);border-radius:50%;font-size:.95rem;z-index:1}
+.t-item strong{display:block;font-family:"Syne",Arial,sans-serif;font-size:1.25rem;margin-bottom:.15rem}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem;margin:2.5rem 0 0}
+.facts div{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:1rem 1.25rem;transition:transform .2s,border-color .2s}
+.facts div:hover{transform:translateY(-5px) rotate(-1deg);border-color:var(--accent)}
+.facts dt{color:var(--muted);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.facts dd{margin:.25rem 0 0;font-weight:700;font-size:1.1rem}
+
+.found{font-weight:700;margin:-.5rem 0 1.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.found-bar{flex:1;min-width:8rem;max-width:16rem;height:.6rem;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.found-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .5s}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.flip{position:relative;height:13rem;padding:0;border:0;background:none;cursor:pointer;font:inherit;color:inherit;transform-style:preserve-3d;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:1.25rem;border-radius:1.25rem;background:var(--panel);border:1px solid var(--line);backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .7s cubic-bezier(.3,1.4,.5,1);font-weight:700;text-align:center}
+.face .emoji{font-size:2.8rem;transition:transform .3s}
+.flip:hover .front .emoji{transform:scale(1.2) rotate(-8deg)}
+.back{transform:rotateY(180deg);background:var(--accent);color:var(--accent-ink);font-weight:500;font-size:1rem;border:0}
+.flip.flipped .front{transform:rotateY(180deg)}
+.flip.flipped .back{transform:rotateY(360deg)}
+
+.day{background:var(--panel);border:1px solid var(--line);border-radius:1.5rem;overflow:hidden}
+.sky{position:relative;height:15rem;background:var(--sky,linear-gradient(#FFD3A5,#FD9FBA));transition:background 1s}
+.orb{position:absolute;left:var(--ox,15%);top:var(--oy,65%);width:4.5rem;height:4.5rem;margin:-2.25rem 0 0 -2.25rem;border-radius:50%;background:#FFE066;box-shadow:0 0 50px 15px rgba(255,224,102,.7);transition:left 1.2s cubic-bezier(.5,0,.3,1),top 1.2s cubic-bezier(.5,0,.3,1),background 1s,box-shadow 1s}
+.sky.night .orb{background:#F1F0FF;box-shadow:0 0 40px 8px rgba(241,240,255,.5),inset -14px -6px 0 #CFCBF0}
+.stars{position:absolute;inset:0;opacity:0;transition:opacity 1s}
+.sky.night .stars{opacity:1}
+.stars i{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 2s ease-in-out infinite}
+.cloud{position:absolute;font-size:2.4rem;opacity:.85;animation:cloud linear infinite}
+.hills{position:absolute;left:0;right:0;bottom:-1px;height:5rem}
+.scene-icon{position:absolute;bottom:1.4rem;left:50%;transform:translateX(-50%);font-size:2.6rem;transition:transform .4s}
+.scene-icon.bump{animation:pop .5s both}
+.day-tabs{display:flex;gap:.5rem;padding:1rem;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.day-tab{flex:1;min-width:6rem;background:transparent;border:2px solid var(--line);border-radius:999px;padding:.55rem .9rem;font:700 .95rem "DM Sans",sans-serif;color:var(--ink);cursor:pointer;transition:all .2s}
+.day-tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.day-body{padding:1.25rem 1.5rem 1.5rem;min-height:7rem}
+.day-body small{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.day-body h3{font:800 1.5rem "Syne",sans-serif;margin:.1rem 0 .4rem}
+.day-body p{margin:0;color:var(--muted)}
+.day-body.swap{animation:pop .5s both}
+
+.quiz-box{background:var(--panel);border:1px solid var(--line);border-radius:1.5rem;padding:1.75rem}
+.dots{display:flex;gap:.4rem;margin-bottom:1rem}
+.dots i{width:2rem;height:.4rem;border-radius:999px;background:var(--line);transition:background .3s}
+.dots i.done{background:var(--accent)}
+.quiz-q{font:700 1.35rem "Syne",sans-serif;margin:0 0 1rem}
+.quiz-opts{display:grid;gap:.75rem;max-width:32rem}
+.quiz-opt{background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:1rem;padding:.8rem 1.1rem;font:500 1rem "DM Sans",sans-serif;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s}
+.quiz-opt:hover:not(:disabled){transform:translateX(6px);border-color:var(--accent)}
+.quiz-opt.right{background:#2B7A3B;color:#fff;border-color:#2B7A3B}
+.quiz-opt.wrong{background:#C92A2A;color:#fff;border-color:#C92A2A;animation:shake .4s}
+.score-big{font:800 4rem "Syne",sans-serif;color:var(--accent);line-height:1}
+
+.rings{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.ring{position:relative;display:flex;flex-direction:column;align-items:center;gap:.6rem;background:var(--panel);border:2px solid var(--line);border-radius:1.5rem;padding:1.5rem 1rem 1.25rem;cursor:pointer;font:inherit;color:var(--ink);transition:transform .25s,border-color .25s,box-shadow .25s}
+.ring:hover{transform:translateY(-6px)}
+.ring[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 16px 40px -18px var(--accent)}
+.dial{position:relative;width:8rem;height:8rem}
+.dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.dial circle{fill:none;stroke-width:10}
+.dial .track{stroke:var(--line)}
+.dial .fill{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:326.73;stroke-dashoffset:326.73;transition:stroke-dashoffset 1.6s cubic-bezier(.3,.8,.3,1)}
+.dial .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dial .emoji{font-size:1.6rem;transition:transform .3s}
+.ring:hover .dial .emoji{transform:scale(1.3) rotate(10deg)}
+.dial .num{font:800 1.5rem "Syne",sans-serif;line-height:1}
+.ring .label{font:800 1.05rem "Syne",sans-serif;text-align:center}
+.ring .lvl{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.skill-story{margin-top:1.5rem;background:var(--accent);color:var(--accent-ink);border-radius:1.25rem;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:center;min-height:5.5rem}
+.skill-story .big{font-size:2.4rem}
+.skill-story p{margin:0;font-weight:500}
+.skill-story strong{font-family:"Syne",sans-serif}
+.skill-story.swap{animation:pop .45s both}
+
+.contact-card{background:var(--panel);border:1px solid var(--line);border-radius:1.5rem;padding:2rem;text-align:center;position:relative;overflow:hidden}
+.envelope{font-size:3.5rem;display:inline-block;animation:float 3s ease-in-out infinite}
+.mail{display:inline-block;font:800 clamp(1.2rem,4.5vw,2.6rem)/1.1 "Syne",sans-serif;word-break:break-word;text-decoration:none;margin:.5rem 0 1.25rem;background:linear-gradient(90deg,var(--accent),var(--ink),var(--accent));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+.contact-actions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:2rem;transform:translate(-50%,150%);background:var(--ink);color:var(--bg);padding:.7rem 1.3rem;border-radius:999px;font-weight:700;transition:transform .35s cubic-bezier(.3,1.4,.5,1);z-index:40}
+.toast.show{transform:translate(-50%,0)}
+footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;text-align:center}
+.to-top{position:fixed;right:1.25rem;bottom:1.25rem;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);font-size:1.2rem;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(20px);transition:all .3s;z-index:25}
+.to-top.show{opacity:1;pointer-events:auto;transform:none}
+
+@keyframes blink{60%{opacity:0}}
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes jelly{30%{transform:scale(1.25,.75)}50%{transform:scale(.85,1.15)}70%{transform:scale(1.05,.95)}}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-8deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
+@keyframes rise{from{transform:translateY(110vh) rotate(0)}to{transform:translateY(-10vh) rotate(360deg)}}
+@keyframes marq{to{transform:translateX(-50%)}}
+@keyframes scrolldot{0%{opacity:0;transform:translateY(0)}40%{opacity:1}100%{opacity:0;transform:translateY(.7rem)}}
+@keyframes twinkle{50%{opacity:.2}}
+@keyframes cloud{from{transform:translateX(-10vw)}to{transform:translateX(70rem)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes shine{to{background-position:200% center}}
+
+@media (max-width:860px){
+  .rings{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr 1fr}
+}
+@media (max-width:740px){
+  .hero{grid-template-columns:1fr;padding-top:1rem;min-height:auto;text-align:left}
+  .photo-wrap{order:-1;justify-self:center;margin-top:1rem}
+  .badge.one{left:-35%}.badge.two{right:-30%}
+  .top nav{gap:.8rem;font-size:.95rem}
+  .spot{display:none}
+}
+@media (max-width:420px){
+  .dial{width:6.5rem;height:6.5rem}
+  .cards{gap:.8rem}
+  .flip{height:12rem}
+  .face{font-size:.95rem;padding:.9rem}
+  .back{font-size:.85rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal,.t-item{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div id="floaties"></div>
+  </div>
+  <div class="spot" aria-hidden="true"></div>
+  <div class="progress" id="progress"></div>
+
+  <div class="page">
+    <div class="top">
+      <span class="logo">Cresseyy<span>.</span></span>
+      <nav aria-label="Sections">
+        <a href="#about">About</a>
+        <a href="#hobbies">Hobbies</a>
+        <a href="#day">My Day</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <button id="theme" type="button" aria-label="Toggle dark mode">🌓</button>
+      </nav>
+    </div>
+
+    <header class="hero">
+      <div>
+        <h1 id="hello">Hi, I’m Cel.</h1>
+        <p class="typed-line"><span class="wave">👋</span> I’m <span id="typed" class="typed"></span><span class="cursor" aria-hidden="true">|</span></p>
+        <p class="intro">Welcome to my little corner of the internet. Scroll down, flip the cards, walk through my day, and see how well you really know me.</p>
+        <div class="vibes" role="group" aria-label="Pick your vibe">
+          <span>Pick your vibe:</span>
+          <button class="vibe active" type="button" data-vibe="lilac" data-name="Lilac 💜" style="--dot:#3A33E0" aria-label="Lilac" aria-pressed="true"></button>
+          <button class="vibe" type="button" data-vibe="ocean" data-name="Ocean 🌊" style="--dot:#0B7285" aria-label="Ocean" aria-pressed="false"></button>
+          <button class="vibe" type="button" data-vibe="sunset" data-name="Sunset 🌅" style="--dot:#D6336C" aria-label="Sunset" aria-pressed="false"></button>
+          <button class="vibe" type="button" data-vibe="forest" data-name="Forest 🌿" style="--dot:#2B7A3B" aria-label="Forest" aria-pressed="false"></button>
+        </div>
+        <button class="btn" id="fact" type="button">✨ Tell me a fun fact</button>
+        <p class="fact" id="factText" aria-live="polite"></p>
+      </div>
+      <div class="photo-wrap" id="photoWrap" title="Psst… try clicking me">
+        <div class="photo" id="photo">
+          <div class="initials" aria-hidden="true">CE</div>
+          <img src="https://scontent.fceb6-1.fna.fbcdn.net/v/t39.30808-6/462924231_524212480463008_5318637963404963665_n.jpg?stp=dst-jpg_tt6&cstp=mx716x707&ctp=s716x707&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEGbEaLX-6Nce0lGq8FA4G4VLSOj9MuiKRUtI6P0y6IpOWlN9X80JvFtsOID4eTOAqlp7fzj49dNu9S543YzuF-&_nc_ohc=SKwfgOI9plkQ7kNvwHu205M&_nc_oc=AdpG8Pck9eUC8CmcjohZ4yFdhOPK5-AguMsG8m0ZOb2UtEkDs0Ljyl9Yk5-IisXUP0Q&_nc_zt=23&_nc_ht=scontent.fceb6-1.fna&_nc_gid=7DDDi_MCXBl4Czb2e9FGVQ&_nc_ss=7b2a8&oh=00_AQODhq-T_14RzYwk4vUfhnSYrr7LVPvGzh5W_EuElst7RQ&oe=6ADA855E" alt="Photo of Crecel Espina" onerror="this.style.display='none'">
+        </div>
+        <span class="badge one">💻 BSIT 3</span>
+        <span class="badge two">🙏 Youth Ministry</span>
+        <p class="photo-tip" id="photoTip">psst… click my photo</p>
+      </div>
+    </header>
+
+    <a class="scroll-hint" href="#about"><span class="mouse"></span>scroll to begin my story</a>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marquee"></div>
+    </div>
+
+    <section id="about" class="reveal">
+      <span class="kicker">Chapter 1</span>
+      <h2>My story</h2>
+      <ol class="timeline" id="timeline">
+        <li class="t-item" data-icon="🌱"><strong>Where it started</strong> I’m a student at the University of Cebu, learning how to turn ideas into websites.</li>
+        <li class="t-item" data-icon="📚"><strong>What I enjoy</strong> Studying or learning new skills.</li>
+        <li class="t-item" data-icon="🚀"><strong>Where I’m going</strong> I’m going to school to study and learn new things.</li>
+      </ol>
+
+      <dl class="facts">
+        <div><dt>👤 Name</dt><dd>Crecel Buytrago Espina</dd></div>
+        <div><dt>🎂 Age</dt><dd>21 yrs old</dd></div>
+        <div><dt>🏝️ Hometown</dt><dd>Bantayan Island</dd></div>
+        <div><dt>📅 Date of Birth</dt><dd>October 4, 2005</dd></div>
+        <div><dt>💍 Marital Status</dt><dd>Single</dd></div>
+        <div><dt>✝️ Religion</dt><dd>Roman Catholic</dd></div>
+        <div><dt>📍 Location</dt><dd>Archbishop's Residence Compound D. Jakosalem Cebu City 6000</dd></div>
+        <div><dt>🏫 School</dt><dd>University of Cebu Main Campus</dd></div>
+        <div><dt>💻 Course</dt><dd>BS Information Technology 3</dd></div>
+      </dl>
+    </section>
+
+    <section id="hobbies" class="reveal">
+      <span class="kicker">Chapter 2</span>
+      <h2>Hobbies and interests</h2>
+      <p class="hint">Click a card to flip it. Can you find them all?</p>
+      <div class="found"><span id="foundText">0 of 6 discovered</span><div class="found-bar"><i id="foundBar"></i></div></div>
+      <div class="cards">
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">🎧</span>Music</span>
+          <span class="face back">I listen while I study, and a good playlist makes any task easier.</span>
+        </button>
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">📸</span>Photography</span>
+          <span class="face back">I love catching small moments that most people walk past.</span>
+        </button>
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">🌴</span>Travel</span>
+          <span class="face back">Beaches, food trips, and new places are always on my wish list.</span>
+        </button>
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">🍲</span>Cooking</span>
+          <span class="face back">No food in the kitchen, so I cooked.</span>
+        </button>
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">🙏📿</span>Pray</span>
+          <span class="face back"> Before and after everything I do, I must never forget to pray and say the Holy Rosary.</span>
+        </button>
+        <button class="flip" type="button">
+          <span class="face front"><span class="emoji">🧹</span>Cleaning &amp; organizing</span>
+          <span class="face back">I enjoy cleaning and organizing because I feel relaxed and happy when everything is neat and tidy.</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- A DAY IN MY LIFE -->
+    <section id="day" class="reveal">
+      <span class="kicker">Chapter 3</span>
+      <h2>A day in my life</h2>
+      <p class="hint">Tap a time of day and watch the sky change.</p>
+      <div class="day">
+        <div class="sky" id="sky">
+          <div class="stars" id="stars"></div>
+          <span class="cloud" style="top:12%;animation-duration:38s">☁️</span>
+          <span class="cloud" style="top:35%;animation-duration:55s;animation-delay:-20s">☁️</span>
+          <div class="orb" id="orb"></div>
+          <svg class="hills" viewBox="0 0 800 80" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 50 Q 150 0 300 40 T 600 30 T 800 40 V80 H0Z" fill="var(--panel)" opacity=".55"/>
+            <path d="M0 65 Q 200 30 400 60 T 800 55 V80 H0Z" fill="var(--panel)"/>
+          </svg>
+          <span class="scene-icon" id="sceneIcon">🙏</span>
+        </div>
+        <div class="day-tabs" role="tablist" aria-label="Times of day" id="dayTabs"></div>
+        <div class="day-body" id="dayBody" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz-section" class="reveal">
+      <span class="kicker">Chapter 4</span>
+      <h2>How well do you know me?</h2>
+      <div class="quiz-box">
+        <div class="dots" id="dots"></div>
+        <div id="quiz" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="reveal">
+      <span class="kicker">Chapter 5</span>
+      <h2>Skills</h2>
+      <p class="hint">Tap a skill to see where it shows up in my life.</p>
+      <div class="rings" id="rings">
+        <button class="ring" type="button" data-level="95" data-emoji="💗" data-name="Empathy"
+          data-story="Serving in Youth Ministry taught me to really listen and make people feel heard.">
+        </button>
+        <button class="ring" type="button" data-level="90" data-emoji="🧭" data-name="Decision-making"
+          data-story="Whether it’s a school project or a church activity, I weigh things out and commit.">
+        </button>
+        <button class="ring" type="button" data-level="85" data-emoji="⏰" data-name="Time Management"
+          data-story="Balancing BSIT classes with my Working Scholar duty means every hour counts.">
+        </button>
+        <button class="ring" type="button" data-level="80" data-emoji="🎨" data-name="Creativity"
+          data-story="I love turning ideas into websites, like this one you’re scrolling right now.">
+        </button>
+      </div>
+      <div class="skill-story" id="skillStory" aria-live="polite">
+        <span class="big">👆</span><p>Pick a skill above to hear its story.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="reveal">
+      <span class="kicker">The end… or the beginning?</span>
+      <h2>Let’s talk</h2>
+      <div class="contact-card">
+        <span class="envelope">💌</span><br>
+        <a class="mail" href="mailto:crecelespina06@gmail.com">crecelespina06@gmail.com</a>
+        <div class="contact-actions">
+          <a class="btn" href="mailto:crecelespina06@gmail.com" style="text-decoration:none">Send me an email</a>
+          <button class="btn ghost" type="button" id="copy">📋 Copy email</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>Made with 🤍 and a good playlist · © <span id="year"></span> Crecel Espina</footer>
+  </div>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// Toast helper
+const toast = $("#toast"); let toastT;
+function say(msg) {
+  toast.textContent = msg; toast.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+// 0. Split hero name into bouncy letters
+const hello = $("#hello");
+hello.setAttribute("aria-label", hello.textContent);
+hello.innerHTML = [...hello.textContent].map((ch, i) =>
+  ch === " " ? " " : '<span class="ch" aria-hidden="true" style="--i:' + i + '">' + ch + "</span>"
+).join("");
+
+// 0b. Floating emojis in the background
+if (!reduce) {
+  const em = ["🎧","📸","🌴","🍲","📿","✨","💜","📚"];
+  const box = $("#floaties");
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement("span");
+    s.className = "floaty"; s.textContent = em[i % em.length];
+    s.style.left = Math.random() * 100 + "%";
+    s.style.animationDuration = 18 + Math.random() * 18 + "s";
+    s.style.animationDelay = -Math.random() * 30 + "s";
+    box.appendChild(s);
+  }
+}
+
+// 0c. Cursor spotlight
+addEventListener("pointermove", e => {
+  document.documentElement.style.setProperty("--mx", e.clientX + "px");
+  document.documentElement.style.setProperty("--my", e.clientY + "px");
+});
+
+// 0d. Marquee words
+const words = ["BSIT Student","Working Scholar","Youth Ministry","Music Lover","Rosary A Day","Proud Bantayanon","Food Trip Buddy","Neat Freak"];
+$("#marquee").innerHTML = [...words, ...words].map(w => "<span>" + w + " ✦</span>").join("");
+
+// 1. Typing effect in the hero
+const roles = ["a BSIT student", "a music lover", "a Working Scholar", "in Youth Ministry"];
+const typed = $("#typed");
+let r = 0, c = 0, deleting = false;
+function type() {
+  const word = roles[r];
+  typed.textContent = word.slice(0, c);
+  if (!deleting && c < word.length) { c++; setTimeout(type, 90); }
+  else if (!deleting) { deleting = true; setTimeout(type, 1300); }
+  else if (c > 0) { c--; setTimeout(type, 45); }
+  else { deleting = false; r = (r + 1) % roles.length; setTimeout(type, 300); }
+}
+type();
+
+// 2. Random fun fact button
+const facts = [
+  "I can find a good playlist for any mood.",
+  "I once spent a whole weekend fixing one tiny bug.",
+  "I think every website should feel friendly.",
+  "I’m always up for a food trip with friends.",
+  "I like building things more than reading about them.",
+  "I love reading Bible verses.",
+  "I’m a servant in our church."
+];
+const factText = $("#factText");
+let lastFact = -1;
+$("#fact").addEventListener("click", () => {
+  let i;
+  do { i = Math.floor(Math.random() * facts.length); } while (i === lastFact);
+  lastFact = i;
+  factText.textContent = "✨ " + facts[i];
+  factText.classList.remove("flash"); void factText.offsetWidth; factText.classList.add("flash");
+  burst($("#fact"));
+});
+
+// 2b. Pick your vibe
+$$(".vibe").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const root = document.documentElement;
+    if (btn.dataset.vibe === "lilac") root.removeAttribute("data-vibe");
+    else root.dataset.vibe = btn.dataset.vibe;
+    $$(".vibe").forEach(b => {
+      const on = b === btn;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", on);
+    });
+    factText.textContent = "Vibe changed to " + btn.dataset.name;
+    burst(btn);
+  });
+});
+
+// 2c. Sparkle burst: a glowing ripple ring + hearts and sparkles that float up
+function burst(el, count = 28) {
+  if (reduce) return;
+  const b = el.getBoundingClientRect();
+  const x = b.left + b.width / 2, y = b.top + b.height / 2;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+
+  // ripple rings
+  [0, 140].forEach(delay => {
+    const ring = document.createElement("span");
+    ring.style.cssText = "position:fixed;left:" + x + "px;top:" + y + "px;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid " + accent + ";pointer-events:none;z-index:50;box-shadow:0 0 18px " + accent;
+    document.body.appendChild(ring);
+    ring.animate([
+      { transform: "scale(.2)", opacity: .9 },
+      { transform: "scale(" + (6 + count / 8) + ")", opacity: 0 }
+    ], { duration: 800, delay, easing: "cubic-bezier(.2,.8,.3,1)", fill: "backwards" }).onfinish = () => ring.remove();
+  });
+
+  // hearts and sparkles drifting upward
+  const shapes = ["💜", "🤍", "✨", "⭐", "💖", "✦"];
+  const n = Math.max(8, Math.round(count * .6));
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("span");
+    const glyph = shapes[Math.floor(Math.random() * shapes.length)];
+    const size = 14 + Math.random() * 16;
+    s.textContent = glyph;
+    s.style.cssText = "position:fixed;left:" + x + "px;top:" + y + "px;font-size:" + size + "px;line-height:1;pointer-events:none;z-index:50;" +
+      (glyph === "✦" ? "color:" + accent + ";text-shadow:0 0 8px " + accent + ";" : "");
+    document.body.appendChild(s);
+    const spread = (Math.random() - .5) * 220;
+    const lift = 120 + Math.random() * 160;
+    const sway = (Math.random() - .5) * 60;
+    s.animate([
+      { transform: "translate(-50%,-50%) scale(0)", opacity: 0 },
+      { transform: "translate(calc(-50% + " + spread * .4 + "px), calc(-50% - " + lift * .3 + "px)) scale(1.2)", opacity: 1, offset: .25 },
+      { transform: "translate(calc(-50% + " + (spread + sway) + "px), calc(-50% - " + lift * .7 + "px)) scale(1) rotate(" + sway / 3 + "deg)", opacity: .9, offset: .65 },
+      { transform: "translate(calc(-50% + " + spread + "px), calc(-50% - " + lift + "px)) scale(.6)", opacity: 0 }
+    ], { duration: 1300 + Math.random() * 700, delay: Math.random() * 150, easing: "ease-out", fill: "backwards" }).onfinish = () => s.remove();
+  }
+}
+
+// 2d. Secret photo easter egg
+let clicks = 0;
+const tips = ["psst… click my photo", "again!", "keep going…", "almost there…", "one more!"];
+$("#photoWrap").addEventListener("click", () => {
+  clicks++;
+  const photo = $("#photo");
+  photo.classList.toggle("spin");
+  if (clicks >= 5) {
+    burst(photo, 60);
+    say("🤍 You found my secret! God bless you today.");
+    $("#photoTip").textContent = "secret unlocked 🤍";
+    clicks = 0;
+  } else {
+    $("#photoTip").textContent = tips[clicks];
+  }
+});
+
+// 3. Flip the hobby cards (with tilt + discovery counter)
+const seen = new Set();
+const cards = $$(".flip");
+cards.forEach((card, i) => {
+  card.addEventListener("click", () => {
+    card.classList.toggle("flipped");
+    if (!seen.has(i)) {
+      seen.add(i);
+      $("#foundText").textContent = seen.size + " of " + cards.length + " discovered";
+      $("#foundBar").style.width = (seen.size / cards.length * 100) + "%";
+      if (seen.size === cards.length) { burst(card, 50); say("🎉 You discovered all my hobbies!"); }
+    }
+  });
+  if (!reduce) {
+    card.addEventListener("pointermove", e => {
+      const b = card.getBoundingClientRect();
+      const px = (e.clientX - b.left) / b.width - .5, py = (e.clientY - b.top) / b.height - .5;
+      card.style.setProperty("--ry", px * 14 + "deg");
+      card.style.setProperty("--rx", -py * 14 + "deg");
+    });
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--ry", "0deg"); card.style.setProperty("--rx", "0deg");
+    });
+  }
+});
+
+// 4. A day in my life (sky scene)
+const day = [
+  { tab: "🌅 Morning", time: "Early morning", title: "Prayer first", icon: "🙏",
+    text: "I start the day with a prayer and the Holy Rosary.",
+    sky: "linear-gradient(#FFD3A5,#FD9FBA)", x: "15%", y: "68%", night: false },
+  { tab: "☀️ Daytime", time: "Daytime", title: "Classes & duty", icon: "💻",
+    text: "Classes for my BSIT course, plus my duty as a Working Scholar.",
+    sky: "linear-gradient(#74C0FC,#D0EBFF)", x: "50%", y: "24%", night: false },
+  { tab: "🌙 Evening", time: "Evening", title: "Cook, tidy, study", icon: "🍲",
+    text: "I cook, tidy up my space, and study with a good playlist on.",
+    sky: "linear-gradient(#1B1A4A,#5F3DC4)", x: "80%", y: "28%", night: true },
+  { tab: "⛪ Weekends", time: "Weekends", title: "Serving with joy", icon: "⛪",
+    text: "Time for Youth Ministry and serving in our church.",
+    sky: "linear-gradient(#FFE8CC,#FFC9C9)", x: "35%", y: "30%", night: false }
+];
+const sky = $("#sky"), orb = $("#orb"), dayBody = $("#dayBody"), sceneIcon = $("#sceneIcon"), tabs = $("#dayTabs");
+const stars = $("#stars");
+for (let i = 0; i < 40; i++) {
+  const s = document.createElement("i");
+  s.style.left = Math.random() * 100 + "%"; s.style.top = Math.random() * 70 + "%";
+  s.style.animationDelay = Math.random() * 2 + "s";
+  stars.appendChild(s);
+}
+let dayIdx = 0, dayTimer;
+function showDay(i) {
+  dayIdx = i;
+  const d = day[i];
+  sky.style.setProperty("--sky", d.sky);
+  orb.style.setProperty("--ox", d.x); orb.style.setProperty("--oy", d.y);
+  sky.classList.toggle("night", d.night);
+  sceneIcon.textContent = d.icon;
+  sceneIcon.classList.remove("bump"); void sceneIcon.offsetWidth; sceneIcon.classList.add("bump");
+  dayBody.innerHTML = "<small>" + d.time + "</small><h3>" + d.title + "</h3><p>" + d.text + "</p>";
+  dayBody.classList.remove("swap"); void dayBody.offsetWidth; dayBody.classList.add("swap");
+  tabs.querySelectorAll("button").forEach((b, k) => b.setAttribute("aria-selected", k === i));
+}
+day.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "day-tab"; b.setAttribute("role", "tab"); b.textContent = d.tab;
+  b.onclick = () => { clearInterval(dayTimer); showDay(i); };
+  tabs.appendChild(b);
+});
+showDay(0);
+// auto-play the day once it scrolls into view, until the visitor taps a tab
+const dayObs = new IntersectionObserver(([e]) => {
+  if (e.isIntersecting && !reduce) {
+    dayTimer = setInterval(() => showDay((dayIdx + 1) % day.length), 3500);
+    dayObs.disconnect();
+  }
+}, { threshold: .5 });
+dayObs.observe(sky);
+
+// 5. Quiz
+const quiz = [
+  { q: "Where does Crecel study?", o: ["University of Cebu-Main Campus", "University of San Carlos", "Cebu Normal University"], a: 0 },
+  { q: "What is her course?", o: ["BS Nursing", "BS Information Technology", "BS Education"], a: 1 },
+  { q: "What is her hometown?", o: ["Bantayan Island", "Mactan", "Moalboal"], a: 0 },
+  { q: "What does she do before and after everything?", o: ["Take a nap", "Scroll social media", "Pray the Holy Rosary"], a: 2 }
+];
+const qBox = $("#quiz"), dots = $("#dots");
+dots.innerHTML = quiz.map(() => "<i></i>").join("");
+let qi = 0, score = 0;
+function showQ() {
+  qBox.innerHTML = "";
+  dots.querySelectorAll("i").forEach((d, k) => d.classList.toggle("done", k < qi));
+  if (qi >= quiz.length) {
+    const big = document.createElement("div");
+    big.className = "score-big"; big.textContent = score + "/" + quiz.length;
+    const p = document.createElement("p");
+    p.className = "quiz-q";
+    p.textContent = score === quiz.length ? "🎉 You know me so well!" : score >= 2 ? "Not bad! Scroll back up and try again 😉" : "Let’s get to know each other more 😄";
+    const again = document.createElement("button");
+    again.type = "button"; again.className = "btn"; again.textContent = "Play again";
+    again.onclick = () => { qi = 0; score = 0; showQ(); };
+    qBox.append(big, p, again);
+    if (score === quiz.length) burst(big, 60);
+    return;
+  }
+  const item = quiz[qi];
+  const h = document.createElement("p");
+  h.className = "quiz-q"; h.textContent = (qi + 1) + ". " + item.q;
+  const wrap = document.createElement("div");
+  wrap.className = "quiz-opts";
+  item.o.forEach((t, idx) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "quiz-opt"; b.textContent = t;
+    b.onclick = () => {
+      wrap.querySelectorAll("button").forEach((x, k) => { x.disabled = true; if (k === item.a) x.classList.add("right"); });
+      if (idx === item.a) { score++; burst(b, 16); } else b.classList.add("wrong");
+      setTimeout(() => { qi++; showQ(); }, 1100);
+    };
+    wrap.append(b);
+  });
+  qBox.append(h, wrap);
+}
+showQ();
+
+// 6. Skills: build animated rings
+const CIRC = 326.73; // 2 * PI * 52
+function levelName(n) { return n >= 90 ? "Expert" : n >= 80 ? "Strong" : "Growing"; }
+$$(".ring").forEach(ring => {
+  const lvl = +ring.dataset.level;
+  ring.setAttribute("aria-pressed", "false");
+  ring.innerHTML =
+    '<div class="dial"><svg viewBox="0 0 120 120" aria-hidden="true">' +
+    '<circle class="track" cx="60" cy="60" r="52"/><circle class="fill" cx="60" cy="60" r="52"/></svg>' +
+    '<div class="center"><span class="emoji">' + ring.dataset.emoji + '</span><span class="num">0%</span></div></div>' +
+    '<span class="label">' + ring.dataset.name + '</span><span class="lvl">' + levelName(lvl) + '</span>';
+  ring.setAttribute("aria-label", ring.dataset.name + ", " + lvl + " percent");
+  ring.addEventListener("click", () => {
+    $$(".ring").forEach(x => x.setAttribute("aria-pressed", x === ring));
+    const box = $("#skillStory");
+    box.innerHTML = '<span class="big">' + ring.dataset.emoji + '</span><p><strong>' + ring.dataset.name + ' · ' + lvl + '%</strong><br>' + ring.dataset.story + '</p>';
+    box.classList.remove("swap"); void box.offsetWidth; box.classList.add("swap");
+    burst(ring, 14);
+  });
+});
+function fillRings() {
+  $$(".ring").forEach((ring, i) => {
+    const lvl = +ring.dataset.level;
+    setTimeout(() => {
+      ring.querySelector(".fill").style.strokeDashoffset = CIRC * (1 - lvl / 100);
+      const num = ring.querySelector(".num");
+      if (reduce) { num.textContent = lvl + "%"; return; }
+      const start = performance.now();
+      (function tick(t) {
+        const p = Math.min((t - start) / 1600, 1);
+        num.textContent = Math.round(lvl * (1 - Math.pow(1 - p, 3))) + "%";
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    }, i * 180);
+  });
+}
+
+// 7. Reveal sections when scrolled into view
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add("show");
+    if (entry.target.id === "skills") fillRings();
+    entry.target.querySelectorAll(".t-item").forEach((t, i) => setTimeout(() => t.classList.add("show"), 250 + i * 250));
+    observer.unobserve(entry.target);
+  });
+}, { threshold: 0.18 });
+$$(".reveal").forEach(el => observer.observe(el));
+
+// 8. Dark mode toggle
+$("#theme").addEventListener("click", () => {
+  const root = document.documentElement;
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+});
+
+// 9. Scroll effects: progress bar, timeline line, active nav link, back-to-top
+const progress = $("#progress"), timeline = $("#timeline"), toTop = $("#toTop");
+const navLinks = [...$$(".top nav a")];
+function onScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  if (max > 0) progress.style.width = (scrollY / max * 100) + "%";
+  const tr = timeline.getBoundingClientRect();
+  const p = Math.min(Math.max((innerHeight * .75 - tr.top) / tr.height, 0), 1);
+  timeline.style.setProperty("--p", p);
+  toTop.classList.toggle("show", scrollY > innerHeight);
+  let current = "";
+  navLinks.forEach(a => {
+    const sec = document.querySelector(a.getAttribute("href"));
+    if (sec && sec.getBoundingClientRect().top < innerHeight * .4) current = a;
+  });
+  navLinks.forEach(a => a.classList.toggle("on", a === current));
+}
+addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+
+// 10. Copy email
+$("#copy").addEventListener("click", e => {
+  const email = "crecelespina06@gmail.com";
+  const done = () => { say("📋 Email copied!"); burst(e.currentTarget || $("#copy"), 20); };
+  if (navigator.clipboard) navigator.clipboard.writeText(email).then(done, () => say(email));
+  else say(email);
+});
+
+// 11. Footer year
+$("#year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
