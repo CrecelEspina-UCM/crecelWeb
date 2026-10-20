@@ -341,7 +341,6 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;text-align:center
       </div>
     </section>
 
-    <!-- A DAY IN MY LIFE -->
     <section id="day" class="reveal">
       <span class="kicker">Chapter 3</span>
       <h2>A day in my life</h2>
@@ -363,7 +362,6 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;text-align:center
       </div>
     </section>
 
-    <!-- QUIZ -->
     <section id="quiz-section" class="reveal">
       <span class="kicker">Chapter 4</span>
       <h2>How well do you know me?</h2>
@@ -373,7 +371,6 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;text-align:center
       </div>
     </section>
 
-    <!-- SKILLS -->
     <section id="skills" class="reveal">
       <span class="kicker">Chapter 5</span>
       <h2>Skills</h2>
@@ -397,7 +394,6 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;text-align:center
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" class="reveal">
       <span class="kicker">The end… or the beginning?</span>
       <h2>Let’s talk</h2>
@@ -422,21 +418,18 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
-// Toast helper
 const toast = $("#toast"); let toastT;
 function say(msg) {
   toast.textContent = msg; toast.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-// 0. Split hero name into bouncy letters
 const hello = $("#hello");
 hello.setAttribute("aria-label", hello.textContent);
 hello.innerHTML = [...hello.textContent].map((ch, i) =>
   ch === " " ? " " : '<span class="ch" aria-hidden="true" style="--i:' + i + '">' + ch + "</span>"
 ).join("");
 
-// 0b. Floating emojis in the background
 if (!reduce) {
   const em = ["🎧","📸","🌴","🍲","📿","✨","💜","📚"];
   const box = $("#floaties");
@@ -450,17 +443,14 @@ if (!reduce) {
   }
 }
 
-// 0c. Cursor spotlight
 addEventListener("pointermove", e => {
   document.documentElement.style.setProperty("--mx", e.clientX + "px");
   document.documentElement.style.setProperty("--my", e.clientY + "px");
 });
 
-// 0d. Marquee words
 const words = ["BSIT Student","Working Scholar","Youth Ministry","Music Lover","Rosary A Day","Proud Bantayanon","Food Trip Buddy","Neat Freak"];
 $("#marquee").innerHTML = [...words, ...words].map(w => "<span>" + w + " ✦</span>").join("");
 
-// 1. Typing effect in the hero
 const roles = ["a BSIT student", "a music lover", "a Working Scholar", "in Youth Ministry"];
 const typed = $("#typed");
 let r = 0, c = 0, deleting = false;
@@ -474,7 +464,6 @@ function type() {
 }
 type();
 
-// 2. Random fun fact button
 const facts = [
   "I can find a good playlist for any mood.",
   "I once spent a whole weekend fixing one tiny bug.",
@@ -495,7 +484,6 @@ $("#fact").addEventListener("click", () => {
   burst($("#fact"));
 });
 
-// 2b. Pick your vibe
 $$(".vibe").forEach(btn => {
   btn.addEventListener("click", () => {
     const root = document.documentElement;
@@ -511,14 +499,12 @@ $$(".vibe").forEach(btn => {
   });
 });
 
-// 2c. Sparkle burst: a glowing ripple ring + hearts and sparkles that float up
 function burst(el, count = 28) {
   if (reduce) return;
   const b = el.getBoundingClientRect();
   const x = b.left + b.width / 2, y = b.top + b.height / 2;
   const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
 
-  // ripple rings
   [0, 140].forEach(delay => {
     const ring = document.createElement("span");
     ring.style.cssText = "position:fixed;left:" + x + "px;top:" + y + "px;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid " + accent + ";pointer-events:none;z-index:50;box-shadow:0 0 18px " + accent;
@@ -529,7 +515,6 @@ function burst(el, count = 28) {
     ], { duration: 800, delay, easing: "cubic-bezier(.2,.8,.3,1)", fill: "backwards" }).onfinish = () => ring.remove();
   });
 
-  // hearts and sparkles drifting upward
   const shapes = ["💜", "🤍", "✨", "⭐", "💖", "✦"];
   const n = Math.max(8, Math.round(count * .6));
   for (let i = 0; i < n; i++) {
@@ -552,7 +537,6 @@ function burst(el, count = 28) {
   }
 }
 
-// 2d. Secret photo easter egg
 let clicks = 0;
 const tips = ["psst… click my photo", "again!", "keep going…", "almost there…", "one more!"];
 $("#photoWrap").addEventListener("click", () => {
@@ -569,7 +553,6 @@ $("#photoWrap").addEventListener("click", () => {
   }
 });
 
-// 3. Flip the hobby cards (with tilt + discovery counter)
 const seen = new Set();
 const cards = $$(".flip");
 cards.forEach((card, i) => {
@@ -595,7 +578,6 @@ cards.forEach((card, i) => {
   }
 });
 
-// 4. A day in my life (sky scene)
 const day = [
   { tab: "🌅 Morning", time: "Early morning", title: "Prayer first", icon: "🙏",
     text: "I start the day with a prayer and the Holy Rosary.",
@@ -638,7 +620,7 @@ day.forEach((d, i) => {
   tabs.appendChild(b);
 });
 showDay(0);
-// auto-play the day once it scrolls into view, until the visitor taps a tab
+
 const dayObs = new IntersectionObserver(([e]) => {
   if (e.isIntersecting && !reduce) {
     dayTimer = setInterval(() => showDay((dayIdx + 1) % day.length), 3500);
@@ -647,7 +629,6 @@ const dayObs = new IntersectionObserver(([e]) => {
 }, { threshold: .5 });
 dayObs.observe(sky);
 
-// 5. Quiz
 const quiz = [
   { q: "Where does Crecel study?", o: ["University of Cebu-Main Campus", "University of San Carlos", "Cebu Normal University"], a: 0 },
   { q: "What is her course?", o: ["BS Nursing", "BS Information Technology", "BS Education"], a: 1 },
@@ -692,7 +673,6 @@ function showQ() {
 }
 showQ();
 
-// 6. Skills: build animated rings
 const CIRC = 326.73; // 2 * PI * 52
 function levelName(n) { return n >= 90 ? "Expert" : n >= 80 ? "Strong" : "Growing"; }
 $$(".ring").forEach(ring => {
@@ -729,7 +709,7 @@ function fillRings() {
   });
 }
 
-// 7. Reveal sections when scrolled into view
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -741,13 +721,13 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.18 });
 $$(".reveal").forEach(el => observer.observe(el));
 
-// 8. Dark mode toggle
+
 $("#theme").addEventListener("click", () => {
   const root = document.documentElement;
   root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
 });
 
-// 9. Scroll effects: progress bar, timeline line, active nav link, back-to-top
+
 const progress = $("#progress"), timeline = $("#timeline"), toTop = $("#toTop");
 const navLinks = [...$$(".top nav a")];
 function onScroll() {
@@ -768,7 +748,6 @@ addEventListener("scroll", onScroll, { passive: true });
 onScroll();
 toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
 
-// 10. Copy email
 $("#copy").addEventListener("click", e => {
   const email = "crecelespina06@gmail.com";
   const done = () => { say("📋 Email copied!"); burst(e.currentTarget || $("#copy"), 20); };
